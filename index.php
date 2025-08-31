@@ -1,13 +1,22 @@
 <?php
-$host = getenv('DB_HOST');
-$user = getenv('DB_USER');
-$password = getenv('DB_PASSWORD');
-$db_name = getenv('DB_NAME');
+// あなたの接続文字列から情報を抽出
+$url = "postgres://user:npg_lTNujZLcI7q5@ep-rough-hall-a4ktsifc.us-east-1.pg.koyeb.app/koyebdb";
 
-$conn = new mysqli($host, $user, $password, $db_name);
+$url_parts = parse_url($url);
+$host = $url_parts['host'];
+$user = $url_parts['user'];
+$password = $url_parts['pass'];
+$dbname = ltrim($url_parts['path'], '/');
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// DSN文字列を作成
+$dsn = "pgsql:host=$host;dbname=$dbname;user=$user;password=$password";
+
+try {
+    // PDOインスタンスを作成して接続を確立
+    $conn = new PDO($dsn);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected successfully to PostgreSQL!";
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
-echo "Connected successfully to MySQL!";
 ?>

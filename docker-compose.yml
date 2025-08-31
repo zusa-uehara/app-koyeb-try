@@ -8,7 +8,8 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      DB_HOST: db  # ここでdbを指定
+      # PHPアプリからアクセスするデータベースの接続情報
+      DB_HOST: db
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: my_database
@@ -16,14 +17,15 @@ services:
       - db
 
   db:
-    image: mysql:8.0
+    # MySQLからPostgreSQLの公式イメージに変更
+    image: postgres:17-alpine
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      # PostgreSQLの環境変数はMySQLと異なります
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: my_database
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
 
 volumes:
   db_data:
