@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html
+      - ./src:/var/www/html
     environment:
       # PHPアプリからアクセスするデータベースの接続情報
       DB_HOST: db
